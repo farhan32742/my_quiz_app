@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - EduTest Pro</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Google Fonts for consistency -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <!-- Bootstrap Icons for form fields -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+        }
+        
+        .login-container {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+        }
+
+        .login-card {
+            border: none;
+            border-radius: 1rem;
+            box-shadow: 0 10px S30px rgba(0,0,0,0.05);
+        }
+        
+        .login-card .card-body {
+            padding: 3rem;
+        }
+
+        .login-header {
+            font-weight: 700;
+            font-size: 2rem;
+            color: #212529;
+        }
+        
+        .input-group .form-control,
+        .input-group .form-select {
+            border-radius: 0.5rem !important; /* Ensure consistent radius */
+            padding-left: 2.5rem; /* Add padding for icon */
+        }
+
+        .input-group-text {
+            background-color: transparent;
+            border: none;
+            position: absolute;
+            left: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 10;
+            color: #6c757d;
+        }
+
+        /* --- FIX & UX IMPROVEMENT FOR SELECT DROPDOWN --- */
+        .form-select {
+            color: #6c757d; /* Placeholder color */
+        }
+        .form-select:valid {
+            color: #212529; /* Color when a valid option is selected */
+        }
+        .form-select option {
+            color: #212529; /* Ensure dropdown options are dark */
+        }
+        /* --- END OF FIX --- */
+
+        .btn-primary {
+            font-weight: 600;
+            padding: 0.75rem;
+            border-radius: 0.5rem;
+        }
+
+        .brand-section {
+            padding: 3rem;
+            color: #495057;
+        }
+        
+        .brand-section h1 {
+            font-weight: 700;
+            font-size: 2.5rem;
+            color: #0d6efd;
+        }
+
+        .back-link {
+            text-decoration: none;
+            color: #6c757d;
+            transition: color 0.2s;
+        }
+        .back-link:hover {
+            color: #212529;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container login-container">
+    <div class="row justify-content-center w-100">
+        <div class="col-lg-10">
+            <div class="card login-card">
+                <div class="row g-0">
+                    <!-- Left Side: Brand and Welcome Message -->
+                    <div class="col-lg-6 d-none d-lg-flex align-items-center justify-content-center brand-section bg-light">
+                        <div class="text-center">
+                            <h1>EduTest Pro</h1>
+                            <p class="lead">The future of secure online assessment.</p>
+                            
+                        </div>
+                    </div>
+                    
+                    <!-- Right Side: Login Form -->
+                    <div class="col-lg-6">
+                        <div class="card-body">
+                            <div class="text-center mb-4">
+                                <h2 class="login-header">Welcome Back!</h2>
+                                <p class="text-muted">Sign in to continue to your dashboard.</p>
+                            </div>
+                            
+                            <form method="POST" action="/api/signin">
+                                <!-- Username Field -->
+                                <div class="input-group mb-3">
+                                     <span class="input-group-text"><i class="bi bi-person-fill"></i></span>
+                                    <input type="text" class="form-control" name="username" placeholder="Username" required>
+                                </div>
+                                
+                                <!-- Password Field -->
+                                <div class="input-group mb-3">
+                                    <span class="input-group-text"><i class="bi bi-lock-fill"></i></span>
+                                    <input type="password" class="form-control" name="password" placeholder="Password" required>
+                                </div>
+                                
+                                <!-- Role Selection Field -->
+                                <div class="input-group mb-4">
+                                    <span class="input-group-text"><i class="bi bi-people-fill"></i></span>
+                                    <select class="form-select" name="role" required>
+                                        <option selected disabled value="">Select your role...</option>
+                                        <option value="Student">Student</option>
+                                        <option value="Teacher">Teacher</option>
+                                        <option value="Administrator">Admin</option>
+                                    </select>
+                                </div>
+
+                                <div class="d-grid">
+                                     <button type="submit" class="btn btn-primary">Sign In</button>
+                                </div>
+                            </form>
+
+                            <p class="mt-4 text-center">Don't have an account? <a href="signup.html">Sign Up</a></p>
+                            
+                            <div class="text-center mt-3">
+                                <a href="http://localhost:5000/" class="back-link"><i class="bi bi-arrow-left"></i> Back to Home</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

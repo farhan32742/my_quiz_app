@@ -3,6 +3,7 @@ import dotenv from 'dotenv';
 import cors from 'cors';
 import path from 'path';
 
+
 // --- DATABASE AND CRON JOB IMPORTS (CORRECTED) ---
 // './' because 'config' is in the same directory as this file
 import './config/db.js'; 
@@ -21,6 +22,7 @@ const app = express();
 const PORT = process.env.PORT || 5000;
 
 // --- MIDDLEWARE ---
+app.set('view engine', 'ejs');
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));

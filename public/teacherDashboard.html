@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teacher Dashboard - EduTest Pro</title>
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f8f9fa;
+        }
+
+        .wrapper {
+            display: flex;
+            width: 100%;
+            align-items: stretch;
+        }
+
+        /* --- Sidebar Styles --- */
+        #sidebar {
+            min-width: 250px;
+            max-width: 250px;
+            background: #212529;
+            color: #fff;
+            transition: all 0.3s;
+        }
+
+        #sidebar.active {
+            margin-left: -250px;
+        }
+
+        #sidebar .sidebar-header {
+            padding: 20px;
+            background: #212529;
+            border-bottom: 1px solid #495057;
+        }
+
+        #sidebar .sidebar-header h3 {
+            color: #fff;
+            font-weight: 700;
+        }
+
+        #sidebar ul.components {
+            padding: 20px 0;
+        }
+
+        #sidebar ul p {
+            color: #fff;
+            padding: 10px;
+        }
+
+        #sidebar ul li a {
+            padding: 15px 20px;
+            font-size: 1.1em;
+            display: block;
+            color: #adb5bd;
+            border-left: 3px solid transparent;
+        }
+
+        #sidebar ul li a:hover {
+            color: #fff;
+            background: #343a40;
+        }
+
+        #sidebar ul li.active > a, a[aria-expanded="true"] {
+            color: #fff;
+            background: #0d6efd;
+        }
+
+        /* --- Main Content Styles --- */
+        #content {
+            width: 100%;
+            padding: 20px;
+            min-height: 100vh;
+            transition: all 0.3s;
+        }
+        
+        /* --- Navbar Styles --- */
+        .navbar {
+            background-color: #fff;
+            border-radius: 0.5rem;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+        }
+        
+        /* --- Card Styles --- */
+        .card {
+            border: none;
+            border-radius: 0.75rem;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            transition: transform 0.3s ease;
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+        }
+
+        .metric-card {
+            display: flex;
+            align-items: center;
+        }
+        .metric-card .icon {
+            font-size: 2.5rem;
+            padding: 1.5rem;
+            border-radius: 50%;
+            margin-right: 1rem;
+            color: #0d6efd;
+            background-color: #e7f1ff;
+        }
+        .metric-card .metric-value {
+            font-size: 2rem;
+            font-weight: 700;
+        }
+        .metric-card .metric-label {
+            color: #6c757d;
+        }
+
+        .exam-card .progress {
+            height: 8px;
+        }
+        
+        .activity-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.75rem 0;
+            border-bottom: 1px solid #eee;
+        }
+        .activity-item:last-child {
+            border-bottom: none;
+        }
+    </style>
+</head>
+<body>
+
+<div class="wrapper">
+    <!-- PASTE THIS INTO createExam.html -->
+<nav id="sidebar">
+    <div class="sidebar-header text-center"><h3>EduTest Pro</h3></div>
+    <ul class="list-unstyled components">
+        <!-- This link is now corrected -->
+        <li><a href="teacherDashboard.html"><i class="bi bi-grid-fill me-2"></i> Dashboard</a></li>
+        
+        <!-- The 'active' class is correctly on this item -->
+        <li class="active"><a href="createExam.html"><i class="bi bi-file-earmark-plus-fill me-2"></i> Create Exam</a></li>
+        
+        <li><a href="#"><i class="bi bi-people-fill me-2"></i> Students</a></li>
+        <li><a href="#"><i class="bi bi-graph-up me-2"></i> Analytics</a></li>
+        <li><a href="settings.html"><i class="bi bi-gear-fill me-2"></i> Settings</a></li>
+    </ul>
+</nav>
+
+    <!-- Page Content -->
+    <div id="content">
+
+        <!-- Top Navbar -->
+        <nav class="navbar navbar-expand-lg navbar-light mb-4">
+            <div class="container-fluid">
+                <button type="button" id="sidebarCollapse" class="btn btn-light">
+                    <i class="bi bi-list"></i>
+                </button>
+                <div class="collapse navbar-collapse">
+                    <ul class="navbar-nav ms-auto">
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                <i class="bi bi-person-circle me-1"></i> Anwaar
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+
+
+                                <li><a class="dropdown-item" href="#">Profile</a></li>
+
+
+                                <li><a class="dropdown-item" href="#">Profile</a></li>
+
+                                <li><hr class="dropdown-divider"></li>
+                                <li><a class="dropdown-item" href="http://localhost:5000/">Logout</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Main Content Header -->
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <div>
+                <h1 class="display-5 fw-bold">Welcome Back, Anwaar!</h1>
+                <p class="text-muted">Here's a summary of your teaching activity.</p>
+            </div>
+            <a href="createExam.html" class="btn btn-primary btn-lg"><i class="bi bi-plus-lg me-2"></i> Create New Exam</a>
+        </div>
+        
+        <!-- Metric Cards -->
+        <div class="row g-4 mb-4">
+            <div class="col-md-6 col-lg-3">
+                <div class="card metric-card p-3">
+                    <div class="icon"><i class="bi bi-file-earmark-text-fill"></i></div>
+                    <div>
+                        <div class="metric-value">3</div>
+                        <div class="metric-label">Active Exams</div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-3">
+                 <div class="card metric-card p-3">
+                    <div class="icon"><i class="bi bi-people-fill"></i></div>
+                    <div>
+                        <div class="metric-value">125</div>
+                        <div class="metric-label">Total Students</div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-3">
+                <div class="card metric-card p-3">
+                    <div class="icon"><i class="bi bi-patch-check-fill"></i></div>
+                    <div>
+                        <div class="metric-value">82.3%</div>
+                        <div class="metric-label">Avg. Performance</div>
+                    </div>
+                </div>
+            </div>
+             <div class="col-md-6 col-lg-3">
+                <div class="card metric-card p-3">
+                    <div class="icon"><i class="bi bi-journal-check"></i></div>
+                    <div>
+                        <div class="metric-value">1,204</div>
+                        <div class="metric-label">Submissions Graded</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Dashboard Columns -->
+        <div class="row g-4">
+            <!-- Left Column: Exams -->
+            <div class="col-lg-8">
+                <div class="card">
+                    <div class="card-header bg-white border-0 pt-3">
+                        <h4 class="fw-bold">My Exams</h4>
+                    </div>
+                    <div class="card-body">
+                        <!-- Exam 1 -->
+                        <div class="exam-card border rounded p-3 mb-3">
+                            <div class="d-flex justify-content-between align-items-start">
+                                <div>
+                                    <h5 class="fw-bold mb-1">Mathematics Final Exam</h5>
+                                    <span class="badge bg-success">Active</span>
+                                </div>
+                                <div class="text-end">
+                                    <p class="mb-1 text-muted"><strong>28/35</strong> Completed</p>
+                                    <p class="mb-0 text-muted">Avg. Score: <strong>78.5%</strong></p>
+                                </div>
+                            </div>
+                            <div class="progress mt-2">
+                                <div class="progress-bar" role="progressbar" style="width: 80%;" aria-valuenow="80" aria-valuemin="0" aria-valuemax="100"></div>
+                            </div>
+                            <div class="mt-3">
+                                <a href="#" class="btn btn-outline-primary btn-sm"><i class="bi bi-eye-fill me-1"></i> View Results</a>
+                                <a href="#" class="btn btn-outline-secondary btn-sm"><i class="bi bi-download me-1"></i> Export</a>
+                            </div>
+                        </div>
+                        <!-- Exam 2 -->
+                         <div class="exam-card border rounded p-3 mb-3">
+                            <div class="d-flex justify-content-between align-items-start">
+                                <div>
+                                    <h5 class="fw-bold mb-1">Physics Mid-Term</h5>
+                                    <span class="badge bg-warning text-dark">Draft</span>
+                                </div>
+                                 <div class="text-end">
+                                    <p class="mb-1 text-muted"><strong>0/35</strong> Completed</p>
+                                    <p class="mb-0 text-muted">Avg. Score: <strong>N/A</strong></p>
+                                </div>
+                            </div>
+                             <div class="mt-3">
+                                <a href="#" class="btn btn-outline-primary btn-sm"><i class="bi bi-pencil-fill me-1"></i> Edit Exam</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Column: Recent Activity -->
+            <div class="col-lg-4">
+                <div class="card">
+                     <div class="card-header bg-white border-0 pt-3">
+                        <h4 class="fw-bold">Recent Student Activity</h4>
+                    </div>
+                    <div class="card-body">
+                        <div class="activity-item">
+                            <div>
+                                <p class="fw-bold mb-0">John Doe</p>
+                                <small class="text-muted">Submitted: Mathematics Final</small>
+                            </div>
+                            <small>10:30 AM</small>
+                        </div>
+                         <div class="activity-item">
+                            <div>
+                                <p class="fw-bold mb-0">Jane Smith</p>
+                                <small class="text-muted">Submitted: Mathematics Final</small>
+                            </div>
+                            <small>9:15 AM</small>
+                        </div>
+                         <div class="activity-item">
+                            <div>
+                                <p class="fw-bold mb-0">Mike Johnson</p>
+                                <small class="text-muted">Started: Mathematics Final</small>
+                            </div>
+                            <small>Yesterday</small>
+                        </div>
+                        <div class="d-grid mt-3">
+                             <a href="#" class="btn btn-light">View All Activity</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<!-- Bootstrap JS Bundle -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        // Sidebar toggle functionality
+        document.getElementById('sidebarCollapse').addEventListener('click', function() {
+            document.getElementById('sidebar').classList.toggle('active');
+        });
+    });
+</script>
+
+</body>
+</html>

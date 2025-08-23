@@ -8,26 +8,58 @@ const saltRounds = 10;
 
 // Your existing signup function remains the same
 export const signup = async (req, res) => {
-  const { firstName, lastName, username, email, password, role } = req.body;
+  // Destructure all possible fields from the form submission
+  const { 
+    firstName, 
+    lastName, 
+    username, 
+    email, 
+    password, 
+    role,
+    studentId,
+    semester,
+    section,
+    teacherId,
+    qualification,
+    adminId
+  } = req.body;
+
   try {
     // Hash the password for security
     const hash = await bcrypt.hash(password, saltRounds);
 
+    // Create a data object with all user details
+    // If a field was not submitted (e.g., studentId for a teacher), it will be 'undefined',
+    // and the database will correctly use its default NULL value.
+    const userData = {
+      firstName,
+      lastName,
+      username,
+      email,
+      password: hash,
+      role,
+      studentId,
+      semester,
+      section,
+      teacherId,
+      qualification,
+      adminId
+    };
+
     // Attempt to create the user in the database
-    createUser({ firstName, lastName, username, email, password: hash, role }, (err) => {
-      // If the database returns an error (e.g., username or email already exists)
+    createUser(userData, (err) => {
       if (err) {
-        // Redirect back to the signup page with an error message in the URL
-        // You could later add code to your signup.html to display this message
+        console.error("Database error:", err);
+        // Redirect back to the signup page with an error
         return res.redirect('/signup?error=Username or email already in use');
       }
       
-      // --- THIS IS THE KEY CHANGE ---
-      // If user creation is successful, redirect to the login page.
+      // If user creation is successful, redirect to the login page
       res.redirect('/login');
     });
   } catch (err) {
-    // If a server error occurs (e.g., bcrypt fails), redirect with a generic error
+    console.error("Server error:", err);
+    // If a server error occurs, redirect with a generic error
     res.redirect('/signup?error=An unexpected error occurred');
   }
 };

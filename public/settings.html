@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Settings - EduTest Pro</title>
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        /* All CSS is identical to the dashboard for consistency */
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f8f9fa;
+        }
+        .wrapper { display: flex; width: 100%; align-items: stretch; }
+        #sidebar { min-width: 250px; max-width: 250px; background: #212529; color: #fff; transition: all 0.3s; }
+        #sidebar.active { margin-left: -250px; }
+        #sidebar .sidebar-header { padding: 20px; background: #212529; border-bottom: 1px solid #495057; }
+        #sidebar .sidebar-header h3 { color: #fff; font-weight: 700; }
+        #sidebar ul.components { padding: 20px 0; }
+        #sidebar ul li a { padding: 15px 20px; font-size: 1.1em; display: block; color: #adb5bd; border-left: 3px solid transparent; }
+        #sidebar ul li a:hover { color: #fff; background: #343a40; }
+        #sidebar ul li.active > a, a[aria-expanded="true"] { color: #fff; background: #0d6efd; }
+        #content { width: 100%; padding: 20px; min-height: 100vh; transition: all 0.3s; }
+        .navbar { background-color: #fff; border-radius: 0.5rem; box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
+        .card { border: none; border-radius: 0.75rem; box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
+        .delete-btn { cursor: pointer; }
+    </style>
+</head>
+<body>
+
+<div class="wrapper">
+    <!-- Sidebar -->
+    <nav id="sidebar">
+        <div class="sidebar-header text-center"><h3>EduTest Pro</h3></div>
+        <ul class="list-unstyled components">
+            <li><a href="teacherDashboard.html"><i class="bi bi-grid-fill me-2"></i> Dashboard</a></li>
+            <li><a href="createExam.html"><i class="bi bi-file-earmark-plus-fill me-2"></i> Create Exam</a></li>
+            <li><a href="#"><i class="bi bi-people-fill me-2"></i> Students</a></li>
+            <li><a href="#"><i class="bi bi-graph-up me-2"></i> Analytics</a></li>
+            <li class="active"><a href="settings.html"><i class="bi bi-gear-fill me-2"></i> Settings</a></li>
+        </ul>
+    </nav>
+
+    <!-- Page Content -->
+    <div id="content">
+        <!-- Top Navbar -->
+        <nav class="navbar navbar-expand-lg navbar-light mb-4">
+            <div class="container-fluid">
+                <button type="button" id="sidebarCollapse" class="btn btn-light"><i class="bi bi-list"></i></button>
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="bi bi-person-circle me-1"></i> Anwaar
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" href="index.html">Logout</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+
+        <!-- Main Content Header -->
+        <div class="mb-4">
+            <h1 class="display-5 fw-bold">Application Settings</h1>
+            <p class="text-muted">Manage reusable information for creating exams quickly.</p>
+        </div>
+        
+        <!-- Settings Management Cards -->
+        <div class="row g-4">
+            <!-- Manage Semesters -->
+            <div class="col-lg-6">
+                <div class="card">
+                    <div class="card-header bg-white border-0 pt-3"><h4 class="fw-bold">Manage Semesters</h4></div>
+                    <div class="card-body">
+                        <div class="input-group mb-3">
+                            <input type="text" id="semester-input" class="form-control" placeholder="Add new semester (e.g., Fall 2025)">
+                            <button class="btn btn-primary" type="button" id="add-semester-btn">Add</button>
+                        </div>
+                        <hr>
+                        <ul class="list-group list-group-flush" id="semester-list">
+                            <li class="list-group-item d-flex justify-content-between align-items-center">Spring 2024 <button class="btn btn-sm btn-outline-danger delete-btn"><i class="bi bi-trash"></i></button></li>
+                            <li class="list-group-item d-flex justify-content-between align-items-center">Fall 2024 <button class="btn btn-sm btn-outline-danger delete-btn"><i class="bi bi-trash"></i></button></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Manage Books -->
+            <div class="col-lg-6">
+                <div class="card">
+                    <div class="card-header bg-white border-0 pt-3"><h4 class="fw-bold">Manage Books</h4></div>
+                    <div class="card-body">
+                        <div class="input-group mb-3">
+                            <input type="text" id="book-input" class="form-control" placeholder="Add new book name">
+                            <button class="btn btn-primary" type="button" id="add-book-btn">Add</button>
+                        </div>
+                        <hr>
+                        <ul class="list-group list-group-flush" id="book-list">
+                            <li class="list-group-item d-flex justify-content-between align-items-center">University Physics <button class="btn btn-sm btn-outline-danger delete-btn"><i class="bi bi-trash"></i></button></li>
+                            <li class="list-group-item d-flex justify-content-between align-items-center">Calculus I <button class="btn btn-sm btn-outline-danger delete-btn"><i class="bi bi-trash"></i></button></li>
+                            <li class="list-group-item d-flex justify-content-between align-items-center">Organic Chemistry <button class="btn btn-sm btn-outline-danger delete-btn"><i class="bi bi-trash"></i></button></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Manage Sections -->
+            <div class="col-lg-6">
+                <div class="card">
+                    <div class="card-header bg-white border-0 pt-3"><h4 class="fw-bold">Manage Sections</h4></div>
+                    <div class="card-body">
+                        <div class="input-group mb-3">
+                            <input type="text" id="section-input" class="form-control" placeholder="Add new section (e.g., Section C)">
+                            <button class="btn btn-primary" type="button" id="add-section-btn">Add</button>
+                        </div>
+                        <hr>
+                        <ul class="list-group list-group-flush" id="section-list">
+                            <li class="list-group-item d-flex justify-content-between align-items-center">Section A <button class="btn btn-sm btn-outline-danger delete-btn"><i class="bi bi-trash"></i></button></li>
+                            <li class="list-group-item d-flex justify-content-between align-items-center">Section B <button class="btn btn-sm btn-outline-danger delete-btn"><i class="bi bi-trash"></i></button></li>
+                            <li class="list-group-item d-flex justify-content-between align-items-center">Morning Batch <button class="btn btn-sm btn-outline-danger delete-btn"><i class="bi bi-trash"></i></button></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Bootstrap JS Bundle -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+<!-- Custom JS for Add/Delete functionality -->
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Sidebar toggle functionality
+        document.getElementById('sidebarCollapse').addEventListener('click', () => {
+            document.getElementById('sidebar').classList.toggle('active');
+        });
+
+        /**
+         * A reusable function to set up the add and delete functionality for a settings card.
+         * @param {string} inputId - The ID of the input field.
+         * @param {string} addButtonId - The ID of the add button.
+         * @param {string} listId - The ID of the UL element.
+         */
+        function setupCard(inputId, addButtonId, listId) {
+            const inputField = document.getElementById(inputId);
+            const addButton = document.getElementById(addButtonId);
+            const itemList = document.getElementById(listId);
+
+            // --- ADD ITEM LOGIC ---
+            addButton.addEventListener('click', function() {
+                const value = inputField.value.trim();
+                if (value) {
+                    // Create the new list item element
+                    const li = document.createElement('li');
+                    li.className = 'list-group-item d-flex justify-content-between align-items-center';
+                    li.textContent = value;
+
+                    // Create the delete button
+                    const deleteBtn = document.createElement('button');
+                    deleteBtn.className = 'btn btn-sm btn-outline-danger delete-btn';
+                    deleteBtn.innerHTML = '<i class="bi bi-trash"></i>';
+                    
+                    li.appendChild(deleteBtn);
+                    
+                    // Add the new item to the list
+                    itemList.appendChild(li);
+                    
+                    // Clear the input field and focus it for the next entry
+                    inputField.value = '';
+                    inputField.focus();
+                }
+            });
+
+            // Allow adding by pressing Enter key
+            inputField.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    addButton.click();
+                }
+            });
+
+            // --- DELETE ITEM LOGIC (using event delegation) ---
+            itemList.addEventListener('click', function(e) {
+                // Find the closest delete button to whatever was clicked inside the list
+                const deleteButton = e.target.closest('.delete-btn');
+                if (deleteButton) {
+                    // Find the parent list item and remove it from the list
+                    deleteButton.parentElement.remove();
+                }
+            });
+        }
+
+        // Initialize the functionality for all three cards
+        setupCard('semester-input', 'add-semester-btn', 'semester-list');
+        setupCard('book-input', 'add-book-btn', 'book-list');
+        setupCard('section-input', 'add-section-btn', 'section-list');
+    });
+</script>
+
+</body>
+</html>

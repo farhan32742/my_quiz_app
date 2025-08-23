@@ -1,0 +1,128 @@
+body {
+    background-color: #f8f9fa;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+}
+
+/* Header */
+.navbar-brand .platform-text {
+    font-size: 0.8rem;
+    display: block;
+    color: #6c757d;
+    margin-top: -8px;
+}
+
+.nav-link.active {
+    font-weight: bold;
+}
+
+.header-banner {
+    background: linear-gradient(90deg, #00c6ff, #0072ff);
+    color: white;
+    padding: 40px 20px;
+}
+
+.header-banner h1 {
+    font-weight: bold;
+    margin: 0;
+}
+
+.header-banner p {
+    margin: 0;
+    opacity: 0.9;
+}
+
+.export-btn {
+    float: right;
+    margin-top: -40px;
+}
+
+/* Stat Cards */
+.stat-card {
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    margin-bottom: 20px;
+}
+
+.stat-card i {
+    font-size: 2.5rem;
+}
+
+.stat-title {
+    margin: 0;
+    color: #6c757d;
+}
+
+.stat-value {
+    font-size: 2rem;
+    font-weight: bold;
+}
+
+.icon-blue { color: #0d6efd; }
+.icon-yellow { color: #ffc107; }
+.icon-green { color: #198754; }
+.icon-purple { color: #6f42c1; }
+.icon-orange { color: #fd7e14; }
+
+.progress {
+    height: 10px;
+}
+
+/* Full Height Cards */
+.full-height {
+    height: 100%;
+}
+
+/* Exam Performance */
+.exam-performance p {
+    margin-bottom: 5px;
+}
+
+.exam-performance .progress {
+    height: 20px;
+}
+
+/* Recent System Activity */
+.activity-item {
+    border-bottom: 1px solid #eee;
+    padding-bottom: 10px;
+    margin-bottom: 10px;
+}
+
+.activity-item:last-child {
+    border-bottom: none;
+    margin-bottom: 0;
+    padding-bottom: 0;
+}
+
+.activity-item h6 {
+    font-weight: bold;
+    margin: 0;
+}
+
+.activity-item p {
+    margin: 0;
+    font-size: 0.9rem;
+}
+
+/* Top Performers */
+.performer-card {
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    text-align: center;
+}
+
+.performer-card .badge {
+    margin-bottom: 10px;
+}
+
+.performer-card h4 {
+    margin: 5px 0;
+}
+
+.performer-card p {
+    color: #6c757d;
+}

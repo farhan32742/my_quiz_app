@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Exam - EduTest Pro</title>
+    
+    <!-- CSS Links (Same as dashboard) -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        /* All CSS is identical to the dashboard for consistency */
+        body { font-family: 'Poppins', sans-serif; background-color: #f8f9fa; }
+        .wrapper { display: flex; width: 100%; align-items: stretch; }
+        #sidebar { min-width: 250px; max-width: 250px; background: #212529; color: #fff; transition: all 0.3s; }
+        #sidebar.active { margin-left: -250px; }
+        #sidebar .sidebar-header { padding: 20px; background: #212529; border-bottom: 1px solid #495057; }
+        #sidebar .sidebar-header h3 { color: #fff; font-weight: 700; }
+        #sidebar ul.components { padding: 20px 0; }
+        #sidebar ul li a { padding: 15px 20px; font-size: 1.1em; display: block; color: #adb5bd; border-left: 3px solid transparent; }
+        #sidebar ul li a:hover { color: #fff; background: #343a40; }
+        #sidebar ul li.active > a, a[aria-expanded="true"] { color: #fff; background: #0d6efd; }
+        #content { width: 100%; padding: 20px; min-height: 100vh; transition: all 0.3s; }
+        .navbar { background-color: #fff; border-radius: 0.5rem; box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
+        .card { border: none; border-radius: 0.75rem; box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
+        .form-control, .form-select { padding: 0.75rem 1rem; }
+        .form-label { font-weight: 500; }
+    </style>
+</head>
+<body>
+
+<div class="wrapper">
+    <!-- Sidebar -->
+    <nav id="sidebar">
+        <div class="sidebar-header text-center"><h3>EduTest Pro</h3></div>
+        <ul class="list-unstyled components">
+            <li><a href="teacher.html"><i class="bi bi-grid-fill me-2"></i> Dashboard</a></li>
+            <li class="active"><a href="exam.html"><i class="bi bi-file-earmark-plus-fill me-2"></i> Create Exam</a></li>
+            <li><a href="#"><i class="bi bi-people-fill me-2"></i> Students</a></li>
+            <li><a href="#"><i class="bi bi-graph-up me-2"></i> Analytics</a></li>
+            <li><a href="settings.html"><i class="bi bi-gear-fill me-2"></i> Settings</a></li>
+        </ul>
+    </nav>
+
+    <!-- Page Content -->
+    <div id="content">
+        <!-- Top Navbar -->
+        <nav class="navbar navbar-expand-lg navbar-light mb-4">
+            <div class="container-fluid">
+                <button type="button" id="sidebarCollapse" class="btn btn-light"><i class="bi bi-list"></i></button>
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="bi bi-person-circle me-1"></i> Anwaar
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                            <li><a class="dropdown-item" href="#">Profile</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" href="index.html">Logout</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+
+        <!-- Main Content Header -->
+        <div class="mb-4">
+            <h1 class="display-5 fw-bold">Create a New Exam</h1>
+            <p class="text-muted">Fill out the details below to set up a new exam for your students.</p>
+        </div>
+        
+        <!-- Create Exam Form -->
+        <div class="card">
+            <div class="card-header bg-white border-0 pt-3"><h4 class="fw-bold">Exam Details</h4></div>
+            <div class="card-body">
+                <form action="/api/exams/create" method="POST" class="exam-form">
+                    <!-- Row 1: Exam Details (INTEGRATED WITH SETTINGS) -->
+                    <div class="row g-3 mb-3">
+                        <div class="col-md-4">
+                            <label for="semester" class="form-label">Semester</label>
+                            <select class="form-select" id="semester" name="semester" required>
+                                <option selected disabled value="">Choose a semester...</option>
+                                <option value="Spring 2024">Spring 2024</option>
+                                <option value="Fall 2024">Fall 2024</option>
+                            </select>
+                        </div>
+                        <div class="col-md-4">
+                            <label for="book" class="form-label">Book Name</label>
+                            <select class="form-select" id="book" name="book" required>
+                                <option selected disabled value="">Choose a book...</option>
+                                <option value="University Physics">University Physics</option>
+                                <option value="Calculus I">Calculus I</option>
+                                <option value="Organic Chemistry">Organic Chemistry</option>
+                            </select>
+                        </div>
+                        <div class="col-md-4">
+                            <label for="section" class="form-label">Section</label>
+                            <select class="form-select" id="section" name="session" required>
+                                <option selected disabled value="">Choose a section...</option>
+                                <option value="Section A">Section A</option>
+                                <option value="Section B">Section B</option>
+                                <option value="Morning Batch">Morning Batch</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Row 2: Scheduling -->
+                    <hr class="my-4">
+                    <h5 class="fw-bold mb-3">Scheduling</h5>
+                    <div class="row g-3 mb-3">
+                        <div class="col-md-4"><label for="date" class="form-label">Date</label><input type="date" class="form-control" id="date" name="exam_date" required></div>
+                        <div class="col-md-4"><label for="time" class="form-label">Time</label><input type="time" class="form-control" id="time" name="exam_time" required></div>
+                        <div class="col-md-4"><label for="allowed-time" class="form-label">Allowed Time (in minutes)</label><input type="number" class="form-control" id="allowed-time" name="time_allowed" placeholder="e.g., 60" required></div>
+                    </div>
+
+                    <!-- Row 3: Scoring -->
+                    <hr class="my-4">
+                    <h5 class="fw-bold mb-3">Scoring & Questions</h5>
+                    <div class="row g-3 mb-3">
+                        <div class="col-md-4"><label for="num-mcqs" class="form-label">Number of MCQs</label><input type="number" class="form-control" id="num-mcqs" name="num_mcqs" placeholder="e.g., 25" required></div>
+                        <div class="col-md-4"><label for="weightage" class="form-label">Weightage per MCQ</label><input type="number" step="0.01" class="form-control" id="weightage" name="mcq_weightage" placeholder="e.g., 1.5" required></div>
+                        <div class="col-md-4"><label for="passing-percentage" class="form-label">Passing Percentage (%)</label><input type="number" step="0.01" class="form-control" id="passing-percentage" name="passing_percentage" placeholder="e.g., 50" required></div>
+                    </div>
+                    
+                    <!-- Submit Button -->
+                    <div class="mt-4 text-end">
+                        <button type="submit" class="btn btn-primary btn-lg"><i class="bi bi-check-circle-fill me-2"></i>Create Exam</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Bootstrap JS Bundle -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+    document.getElementById('sidebarCollapse').addEventListener('click', () => {
+        document.getElementById('sidebar').classList.toggle('active');
+    });
+</script>
+
+</body>
+</html>

@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Questions - EduPro</title>
+    <link rel="stylesheet" href="teacher_dashboard.css">
+    <link rel="stylesheet" href="addQuestions.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="dashboard-container">
+        <!-- Header Navigation -->
+        <header class="dashboard-header">
+            <div class="logo">
+                <h2>EduPro</h2>
+                <p>platform</p>
+            </div>
+            <nav class="header-nav">
+                <a href="/teacherDashboard">Dashboard</a>
+                <a href="/createExam" class="active">Create Exam</a>
+                <a href="#">My Exams</a>
+                <a href="#">Analytics</a>
+            </nav>
+        </header>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <div class="form-container">
+                <h1>Add Questions to Your Exam</h1>
+                <p>Click the "Add Question" button to create a new question field. You must add all required questions before you can save.</p>
+                
+                <form action="/api/exams/add-questions" method="POST" id="questions-form">
+                    <!-- Hidden input to store the quiz ID -->
+                    <input type="hidden" name="quizId" id="quizId-hidden-input">
+                    
+                    <div id="questions-container">
+                        <!-- Question blocks will be dynamically inserted here -->
+                    </div>
+                    
+                    <!-- This button will add new question fields -->
+                    <button type="button" id="add-question-btn" class="btn-add">
+                        <i class="fas fa-plus"></i> Add Question
+                    </button>
+                    
+                    <!-- This button submits the final form -->
+                    <button type="submit" id="submit-btn" class="btn-submit" disabled>Save All Questions</button>
+                </form>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Get references to DOM elements
+            const questionsContainer = document.getElementById('questions-container');
+            const hiddenQuizIdInput = document.getElementById('quizId-hidden-input');
+            const addQuestionBtn = document.getElementById('add-question-btn');
+            const submitBtn = document.getElementById('submit-btn');
+            const form = document.getElementById('questions-form');
+
+            // 1. Get quizId and total number of MCQs from the URL
+            const params = new URLSearchParams(window.location.search);
+            const quizId = params.get('quizId');
+            const totalMcqs = parseInt(params.get('num_mcqs'), 10);
+
+            // Keep track of how many questions have been added
+            let currentQuestionCount = 0;
+
+            // Handle errors if URL parameters are missing
+            if (!quizId || !totalMcqs) {
+                questionsContainer.innerHTML = '<p class="error">Error: Could not find Quiz ID or number of questions. Please <a href="/createExam">start over</a>.</p>';
+                addQuestionBtn.style.display = 'none';
+                submitBtn.style.display = 'none';
+                return;
+            }
+
+            // 2. Set the hidden input value for the quizId
+            hiddenQuizIdInput.value = quizId;
+
+            // Function to generate and add a new question block
+            const addNewQuestionBlock = () => {
+                // Stop if we have already added the total number of questions
+                if (currentQuestionCount >= totalMcqs) {
+                    return;
+                }
+
+                const questionIndex = currentQuestionCount;
+                
+                // Create a new div element for the question block
+                const questionBlock = document.createElement('div');
+                questionBlock.className = 'question-block';
+
+                questionBlock.innerHTML = `
+                    <h4>Question ${questionIndex + 1} of ${totalMcqs}</h4>
+                    <div class="form-group">
+                        <label for="question_text_${questionIndex}">Question Text</label>
+                        <textarea name="questions[${questionIndex}][question_text]" id="question_text_${questionIndex}" rows="3" required></textarea>
+                    </div>
+                    <div class="options-grid">
+                        ${[1, 2, 3, 4].map(optNum => `
+                            <div class="option-item">
+                                <input type="radio" name="questions[${questionIndex}][correct_option]" value="${optNum}" id="correct_opt_${questionIndex}_${optNum}" required>
+                                <label for="option_text_${questionIndex}_${optNum}">Option ${optNum}</label>
+                                <input type="text" name="questions[${questionIndex}][options][]" id="option_text_${questionIndex}_${optNum}" placeholder="Enter option text" required>
+                            </div>
+                        `).join('')}
+                    </div>
+                `;
+
+                // Add the new block to the container
+                questionsContainer.appendChild(questionBlock);
+                currentQuestionCount++; // Increment the counter
+
+                // 3. Update the state of the buttons
+                updateButtonStates();
+            };
+
+            // Function to control the "Add" and "Save" buttons
+            const updateButtonStates = () => {
+                // If the number of added questions equals the total required...
+                if (currentQuestionCount === totalMcqs) {
+                    addQuestionBtn.disabled = true;
+                    addQuestionBtn.innerHTML = `<i class="fas fa-check"></i> All ${totalMcqs} questions added`;
+                    submitBtn.disabled = false; // Enable the save button
+                } else {
+                    addQuestionBtn.disabled = false;
+                    addQuestionBtn.innerHTML = `<i class="fas fa-plus"></i> Add Question (${currentQuestionCount + 1} of ${totalMcqs})`;
+                    submitBtn.disabled = true; // Keep the save button disabled
+                }
+            };
+            
+            // 4. Set up the event listener for the "Add Question" button
+            addQuestionBtn.addEventListener('click', addNewQuestionBlock);
+
+            // 5. Add the very first question block automatically on page load
+            addNewQuestionBlock();
+        });
+    </script>
+</body>
+</html>

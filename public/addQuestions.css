@@ -1,0 +1,128 @@
+/* Styling for the Add Questions form */
+.form-container {
+    background-color: #fdfdfd;
+    padding: 30px 40px;
+    border-radius: 12px;
+    margin-top: 20px;
+    box-shadow: var(--shadow);
+}
+
+.question-block {
+    background-color: var(--white);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 25px;
+}
+
+.question-block h4 {
+    margin-top: 0;
+    margin-bottom: 20px;
+    font-size: 1.2em;
+    font-weight: 600;
+    color: var(--primary-blue);
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 10px;
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 500;
+}
+
+.form-group textarea {
+    width: 100%;
+    padding: 12px 15px;
+    border-radius: 8px;
+    border: 1px solid var(--border-color);
+    font-family: 'Poppins', sans-serif;
+    font-size: 1em;
+    resize: vertical;
+}
+
+.options-grid {
+    display: grid;
+    gap: 15px;
+}
+
+.option-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.option-item input[type="radio"] {
+    flex-shrink: 0;
+    width: 18px;
+    height: 18px;
+}
+
+.option-item label {
+    font-weight: 500;
+    flex-shrink: 0;
+}
+
+.option-item input[type="text"] {
+    width: 100%;
+    padding: 10px 15px;
+    border-radius: 8px;
+    border: 1px solid var(--border-color);
+}
+
+/* --- NEW AND UPDATED STYLES --- */
+
+/* Style for the new "Add Question" button */
+.btn-add {
+    width: 100%;
+    padding: 12px;
+    background-color: transparent;
+    color: var(--primary-green);
+    border: 2px dashed var(--primary-green);
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 1em;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-bottom: 20px; /* Space between add and save buttons */
+}
+
+.btn-add:hover {
+    background-color: var(--light-green);
+    border-style: solid;
+}
+
+.btn-add:disabled {
+    color: #95a5a6;
+    border-color: #bdc3c7;
+    background-color: #ecf0f1;
+    cursor: not-allowed;
+}
+
+/* Style for the main submit button */
+.btn-submit {
+    background-color: var(--primary-green);
+    color: var(--white);
+    padding: 15px 30px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 1em;
+    font-weight: 600;
+    transition: background-color 0.3s;
+    width: 100%;
+}
+
+.btn-submit:hover {
+    background-color: #27ae60;
+}
+
+/* Style for when the submit button is disabled */
+.btn-submit:disabled {
+    background-color: #bdc3c7;
+    cursor: not-allowed;
+}
