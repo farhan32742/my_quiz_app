@@ -36,10 +36,11 @@
     <nav id="sidebar">
         <div class="sidebar-header text-center"><h3>EduTest Pro</h3></div>
         <ul class="list-unstyled components">
-            <li><a href="teacher.html"><i class="bi bi-grid-fill me-2"></i> Dashboard</a></li>
-            <li class="active"><a href="exam.html"><i class="bi bi-file-earmark-plus-fill me-2"></i> Create Exam</a></li>
+            <!-- Corrected link to dashboard -->
+            <li><a href="teacherDashboard.html"><i class="bi bi-grid-fill me-2"></i> Dashboard</a></li>
+            <!-- Active class is correct -->
+            <li class="active"><a href="createExam.html"><i class="bi bi-file-earmark-plus-fill me-2"></i> Create Exam</a></li>
             <li><a href="#"><i class="bi bi-people-fill me-2"></i> Students</a></li>
-            <li><a href="#"><i class="bi bi-graph-up me-2"></i> Analytics</a></li>
             <li><a href="settings.html"><i class="bi bi-gear-fill me-2"></i> Settings</a></li>
         </ul>
     </nav>
@@ -52,13 +53,16 @@
                 <button type="button" id="sidebarCollapse" class="btn btn-light"><i class="bi bi-list"></i></button>
                 <ul class="navbar-nav ms-auto">
                     <li class="nav-item dropdown">
+                        <!-- STEP 1: MODIFIED THIS SECTION TO ADD THE ID -->
                         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            <i class="bi bi-person-circle me-1"></i> Anwaar
+                            <i class="bi bi-person-circle me-1"></i>
+                            <span id="user-name-dropdown">Loading...</span>
                         </a>
                         <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
                             <li><a class="dropdown-item" href="#">Profile</a></li>
                             <li><hr class="dropdown-divider"></li>
-                            <li><a class="dropdown-item" href="index.html">Logout</a></li>
+                            <!-- Corrected logout link -->
+                            <li><a class="dropdown-item" href="http://localhost:5000/">Logout</a></li>
                         </ul>
                     </li>
                 </ul>
@@ -76,7 +80,6 @@
             <div class="card-header bg-white border-0 pt-3"><h4 class="fw-bold">Exam Details</h4></div>
             <div class="card-body">
                 <form action="/api/exams/create" method="POST" class="exam-form">
-                    <!-- Row 1: Exam Details (INTEGRATED WITH SETTINGS) -->
                     <div class="row g-3 mb-3">
                         <div class="col-md-4">
                             <label for="semester" class="form-label">Semester</label>
@@ -136,9 +139,48 @@
 
 <!-- Bootstrap JS Bundle -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+<!-- STEP 2: ADDED THE SAME SCRIPT FROM THE DASHBOARD -->
 <script>
-    document.getElementById('sidebarCollapse').addEventListener('click', () => {
-        document.getElementById('sidebar').classList.toggle('active');
+    document.addEventListener("DOMContentLoaded", async function() {
+        // Sidebar toggle functionality
+        document.getElementById('sidebarCollapse').addEventListener('click', function() {
+            document.getElementById('sidebar').classList.toggle('active');
+        });
+
+        // Function to fetch user data and update the UI
+        async function loadUserData() {
+            try {
+                const response = await fetch('/api/me', {
+                    method: 'GET',
+                    headers: { 'Content-Type': 'application/json' }
+                });
+
+                if (!response.ok) {
+                    // If the user is not authorized, redirect to the login page.
+                    window.location.href = '/login';
+                    return;
+                }
+
+                const user = await response.json();
+                
+                // Use the user's first name, or their username as a fallback.
+                const userName = user.firstName || user.username;
+
+                if (userName) {
+                    // Update the name in the navbar dropdown
+                    document.getElementById('user-name-dropdown').textContent = userName;
+                }
+
+            } catch (error) {
+                console.error('Failed to fetch user data:', error);
+                // On any error, redirect to login for safety.
+                window.location.href = '/login';
+            }
+        }
+
+        // Call the function as soon as the page content has loaded
+        loadUserData();
     });
 </script>
 
