@@ -81,12 +81,22 @@
             <div class="card-body">
                 <form action="/api/exams/create" method="POST" class="exam-form">
                     <div class="row g-3 mb-3">
+                        <input type="hidden" id="teacher_id" name="teacher_id">
                         <div class="col-md-4">
                             <label for="semester" class="form-label">Semester</label>
                             <select class="form-select" id="semester" name="semester" required>
                                 <option selected disabled value="">Choose a semester...</option>
-                                <option value="Spring 2024">Spring 2024</option>
-                                <option value="Fall 2024">Fall 2024</option>
+
+                                                        <option value="1">1</option>
+                                                        <option value="2">2</option>
+                                                        <option value="3">3</option>
+                                                        <option value="4">4</option>
+                                                        <option value="5">5</option>
+                                                        <option value="6">6</option>
+                                                        <option value="7">7</option>
+                                                        <option value="8">8</option>
+                                                        <option value="9">9</option>
+                                                        <option value="10">10</option>
                             </select>
                         </div>
                         <div class="col-md-4">
@@ -143,12 +153,8 @@
 <!-- STEP 2: ADDED THE SAME SCRIPT FROM THE DASHBOARD -->
 <script>
     document.addEventListener("DOMContentLoaded", async function() {
-        // Sidebar toggle functionality
-        document.getElementById('sidebarCollapse').addEventListener('click', function() {
-            document.getElementById('sidebar').classList.toggle('active');
-        });
+        // ... (sidebar toggle functionality remains the same) ...
 
-        // Function to fetch user data and update the UI
         async function loadUserData() {
             try {
                 const response = await fetch('/api/me', {
@@ -157,29 +163,29 @@
                 });
 
                 if (!response.ok) {
-                    // If the user is not authorized, redirect to the login page.
                     window.location.href = '/login';
                     return;
                 }
 
                 const user = await response.json();
                 
-                // Use the user's first name, or their username as a fallback.
                 const userName = user.firstName || user.username;
 
                 if (userName) {
-                    // Update the name in the navbar dropdown
                     document.getElementById('user-name-dropdown').textContent = userName;
+                }
+                
+                // *** NEW: POPULATE THE HIDDEN TEACHER ID FIELD ***
+                if (user.id) {
+                    document.getElementById('teacher_id').value = user.id;
                 }
 
             } catch (error) {
                 console.error('Failed to fetch user data:', error);
-                // On any error, redirect to login for safety.
                 window.location.href = '/login';
             }
         }
 
-        // Call the function as soon as the page content has loaded
         loadUserData();
     });
 </script>

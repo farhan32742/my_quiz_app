@@ -1,15 +1,21 @@
-import { createQuiz } from '../models/examModel.js';
-// We will create the addQuestionsToDb function in the examModel later
-import { addQuestionsToDb } from '../models/examModel.js';
+import { createQuiz, addQuestionsToDb } from '../models/examModel.js';
 
 export const createExam = async (req, res) => {
-  const teacher_id = 1; // Replace with actual logged-in user ID from session/token
-  
-  const quizData = {
-    teacher_id,
-    ...req.body 
-  };
+  // REMOVED: const teacher_id = 1; 
 
+  // The entire form data, including the teacher_id from the hidden field,
+  // is now in req.body. We can pass it directly to the model.
+  const quizData = req.body;
+
+  // --- ADD THIS VALIDATION ---
+  // It's crucial to check if the teacher_id exists before proceeding.
+  if (!quizData.teacher_id) {
+    console.error("Create exam error: teacher_id was not found in the request body.");
+    // Redirect with an error message indicating a login issue.
+    return res.redirect('/createExam?error=Could+not+verify+teacher+ID.+Please+try+logging+in+again.');
+  }
+
+  // The quizData object now automatically contains the correct teacher_id
   createQuiz(quizData, (err, quizId) => {
     if (err) {
       console.error("Failed to create exam:", err);
@@ -17,12 +23,10 @@ export const createExam = async (req, res) => {
     }
     
     // SUCCESS! Redirect to the page for adding questions.
-    // Pass the new quiz ID and the number of MCQs as URL query parameters.
-    const num_mcqs = req.body.num_mcqs;
+    const num_mcqs = quizData.num_mcqs; // Use quizData for consistency
     res.redirect(`/addQuestions?quizId=${quizId}&num_mcqs=${num_mcqs}`); 
   });
 };
-
 // NEW FUNCTION to handle adding questions
 export const addQuestions = async (req, res) => {
     const { quizId, questions } = req.body;
