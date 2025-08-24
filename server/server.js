@@ -2,7 +2,7 @@ import express from 'express';
 import dotenv from 'dotenv';
 import cors from 'cors';
 import path from 'path';
-
+import cookieParser from 'cookie-parser'; 
 
 // --- DATABASE AND CRON JOB IMPORTS (CORRECTED) ---
 // './' because 'config' is in the same directory as this file
@@ -27,7 +27,8 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static('public'));
-
+app.use(cookieParser()); 
+app.use('/api', authRoutes);
 // --- HTML PAGE SERVING ROUTES ---
 // (These are correct as is)
 app.get('/', (req, res) => res.sendFile(path.resolve('public/frontpage.html')));

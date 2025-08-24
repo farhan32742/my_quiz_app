@@ -1,8 +1,7 @@
 import db from '../config/db.js';
 
-// 1. Create a new user (UPDATED FUNCTION)
+// 1. Create a new user (Your existing code is fine)
 export const createUser = (userData, callback) => {
-  // The SQL query now includes all the new nullable columns for different roles.
   const sql = `
     INSERT INTO users (
       firstName, lastName, username, email, password, role, 
@@ -11,10 +10,6 @@ export const createUser = (userData, callback) => {
       adminId
     ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
   `;
-
-  // The order of values in this array MUST exactly match the order of columns and '?' marks in the SQL query.
-  // We use '|| null' to ensure that if a field is missing from the form (undefined),
-  // a proper NULL value is inserted into the database.
   const values = [
     userData.firstName,
     userData.lastName,
@@ -29,18 +24,27 @@ export const createUser = (userData, callback) => {
     userData.qualification || null,
     userData.adminId || null
   ];
-
   db.query(sql, values, callback);
 };
 
-// 2. Find user by username (No changes needed)
+// 2. Find user by username (Your existing code is fine)
 export const findUserByUsername = (username, callback) => {
   const sql = 'SELECT * FROM users WHERE username = ?';
   db.query(sql, [username], callback);
 };
 
-// 3. Find user by email (No changes needed)
+// 3. Find user by email (Your existing code is fine)
 export const findUserByEmail = (email, callback) => {
   const sql = 'SELECT * FROM users WHERE email = ?';
   db.query(sql, [email], callback);
+};
+
+
+// 4. ADD THIS NEW FUNCTION
+// This function finds a user by their ID and returns only the non-sensitive data
+export const findUserById = (id, callback) => {
+  const query = 'SELECT id, firstName, lastName, username, email, role FROM users WHERE id = ?';
+  db.query(query, [id], (err, results) => {
+    callback(err, results);
+  });
 };

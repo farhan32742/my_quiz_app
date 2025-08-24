@@ -1,43 +1,32 @@
 import jwt from 'jsonwebtoken';
-import asyncHandler from 'express-async-handler';
-import db from '../config/db.js'; // Adjust path if necessary
+import dotenv from 'dotenv';
 
-const protect = asyncHandler(async (req, res, next) => {
-  let token;
+dotenv.config();
 
-  // Check for the token in the Authorization header (e.g., "Bearer eyJhbGci...")
-  if (req.headers.authorization && req.headers.authorization.startsWith('Bearer')) {
-    try {
-      // Get token from header
-      token = req.headers.authorization.split(' ')[1];
+// This middleware function is designed to protect routes
+export const protect = (req, res, next) => {
+    // 1. Get the token from the httpOnly cookie
+    const token = req.cookies.token;
 
-      // Verify the token using your JWT_SECRET from the .env file
-      const decoded = jwt.verify(token, process.env.JWT_SECRET);
-
-      // Get user from the database using the id from the token payload
-      // We attach the user info to the request object (`req.user`) so our controllers can use it
-      db.query('SELECT id, firstName, lastName, email, role FROM users WHERE id = ?', [decoded.id], (err, results) => {
-        if (err || results.length === 0) {
-          res.status(401);
-          throw new Error('Not authorized, user not found');
+    // 2. Check if the token exists
+    if (token) {
+        try {
+            // 3. Verify the token is valid
+            const decoded = jwt.verify(token, process.env.JWT_SECRET);
+            
+            // 4. Attach the decoded user payload (id, role) to the request object
+            // This makes the user's info available in any subsequent route handlers
+            req.user = decoded; 
+            
+            // 5. Proceed to the next step (the actual route controller)
+            next(); 
+        } catch (error) {
+            console.error('Token verification failed:', error);
+            // If verification fails, the user is not authorized
+            return res.status(401).json({ message: 'Not authorized, token failed' });
         }
-
-        // Attach user data to the request
-        req.user = results[0]; 
-        next(); // Move on to the next piece of middleware or the controller
-      });
-
-    } catch (error) {
-      console.error(error);
-      res.status(401);
-      throw new Error('Not authorized, token failed');
+    } else {
+         // If there's no token at all, the user is not authorized
+        return res.status(401).json({ message: 'Not authorized, no token' });
     }
-  }
-
-  if (!token) {
-    res.status(401);
-    throw new Error('Not authorized, no token provided');
-  }
-});
-
-export { protect };
+};

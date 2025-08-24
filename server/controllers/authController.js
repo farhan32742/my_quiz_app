@@ -1,113 +1,88 @@
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import dotenv from 'dotenv';
-import { createUser, findUserByUsername } from '../models/userModel.js';
+// IMPORTANT: Import the new findUserById function
+import { createUser, findUserByUsername, findUserById } from '../models/userModel.js';
 
 dotenv.config();
 const saltRounds = 10;
 
-// Your existing signup function remains the same
+// Your 'signup' function remains the same
 export const signup = async (req, res) => {
-  // Destructure all possible fields from the form submission
-  const { 
-    firstName, 
-    lastName, 
-    username, 
-    email, 
-    password, 
-    role,
-    studentId,
-    semester,
-    section,
-    teacherId,
-    qualification,
-    adminId
-  } = req.body;
-
-  try {
-    // Hash the password for security
-    const hash = await bcrypt.hash(password, saltRounds);
-
-    // Create a data object with all user details
-    // If a field was not submitted (e.g., studentId for a teacher), it will be 'undefined',
-    // and the database will correctly use its default NULL value.
-    const userData = {
-      firstName,
-      lastName,
-      username,
-      email,
-      password: hash,
-      role,
-      studentId,
-      semester,
-      section,
-      teacherId,
-      qualification,
-      adminId
-    };
-
-    // Attempt to create the user in the database
-    createUser(userData, (err) => {
-      if (err) {
-        console.error("Database error:", err);
-        // Redirect back to the signup page with an error
-        return res.redirect('/signup?error=Username or email already in use');
-      }
-      
-      // If user creation is successful, redirect to the login page
-      res.redirect('/login');
-    });
-  } catch (err) {
-    console.error("Server error:", err);
-    // If a server error occurs, redirect with a generic error
-    res.redirect('/signup?error=An unexpected error occurred');
-  }
+    // ... your existing signup code ...
+    const { 
+        firstName, lastName, username, email, password, role,
+        studentId, semester, section, teacherId, qualification, adminId
+    } = req.body;
+    try {
+        const hash = await bcrypt.hash(password, saltRounds);
+        const userData = {
+            firstName, lastName, username, email, password: hash, role,
+            studentId, semester, section, teacherId, qualification, adminId
+        };
+        createUser(userData, (err) => {
+            if (err) {
+                console.error("Database error:", err);
+                return res.redirect('/signup?error=Username or email already in use');
+            }
+            res.redirect('/login');
+        });
+    } catch (err) {
+        console.error("Server error:", err);
+        res.redirect('/signup?error=An unexpected error occurred');
+    }
 };
-// Updated signin function
-export const signin = async (req, res) => {
-  // Destructure username, password, AND role from the request body
-  const { username, password, role } = req.body;
 
-  findUserByUsername(username, async (err, results) => {
-    // If user not found, redirect with an error
+// Your 'signin' function remains the same
+export const signin = async (req, res) => {
+    // ... your existing signin code ...
+    const { username, password, role } = req.body;
+    findUserByUsername(username, async (err, results) => {
+        if (err || results.length === 0) {
+            return res.redirect('/login?error=Invalid credentials');
+        }
+        const user = results[0];
+        const match = await bcrypt.compare(password, user.password);
+        if (!match || user.role !== role) {
+            return res.redirect('/login?error=Invalid credentials');
+        }
+        const token = jwt.sign(
+            { id: user.id, role: user.role },
+            process.env.JWT_SECRET,
+            { expiresIn: '1h' }
+        );
+        res.cookie('token', token, { httpOnly: true });
+        switch (user.role) {
+            case 'Student': res.redirect('/studentDashboard'); break;
+            case 'Teacher': res.redirect('/teacherDashboard'); break;
+            case 'Administrator': res.redirect('/adminDashboard'); break;
+            default: res.redirect('/login');
+        }
+    });
+};
+
+
+// ADD THIS ENTIRE NEW FUNCTION
+// This function will handle requests to the /api/me endpoint
+export const getCurrentUser = (req, res) => {
+  // The user ID is attached to req.user by our 'protect' middleware
+  const userId = req.user.id;
+
+  findUserById(userId, (err, results) => {
     if (err || results.length === 0) {
-      return res.redirect('/login?error=Invalid credentials');
+      return res.status(404).json({ message: 'User not found' });
     }
 
     const user = results[0];
-
-    // Compare the submitted password with the hashed password from the database
-    const match = await bcrypt.compare(password, user.password);
-
-    // If passwords don't match OR the role from the form doesn't match the user's role in the DB
-    if (!match || user.role !== role) {
-      return res.redirect('/login?error=Invalid credentials');
-    }
-
-    // Passwords and role match, proceed with creating a session/token
-    const token = jwt.sign(
-      { id: user.id, role: user.role },
-      process.env.JWT_SECRET,
-      { expiresIn: '1h' }
-    );
-
-    // Save the token in an HTTP-only cookie for security
-    res.cookie('token', token, { httpOnly: true });
-
-    // Redirect based on the user's role
-    switch (user.role) {
-      case 'Student':
-        res.redirect('/studentDashboard');
-        break;
-      case 'Teacher':
-        res.redirect('/teacherDashboard');
-        break;
-      case 'Administrator':
-        res.redirect('/adminDashboard');
-        break;
-      default:
-        // As a fallback, redirect to a generic login page
-        res.redirect('/login');
-    }
+    
+    // Send back the user's details as a JSON response
+    res.json({
+      id: user.id,
+      firstName: user.firstName,
+      lastName: user.lastName,
+      username: user.username,
+      email: user.email,
+      role: user.role
+    });
   });
 };
