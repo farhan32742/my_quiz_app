@@ -5,8 +5,11 @@ dotenv.config();
 
 // This middleware function is designed to protect routes
 export const protect = (req, res, next) => {
-    // 1. Get the token from the httpOnly cookie
-    const token = req.cookies.token;
+    // 1. Get the token from the httpOnly cookie or Authorization header
+    let token = req.cookies.token;
+    if (!token && req.headers.authorization && req.headers.authorization.startsWith('Bearer ')) {
+        token = req.headers.authorization.split(' ')[1];
+    }
 
     // 2. Check if the token exists
     if (token) {
@@ -29,4 +32,11 @@ export const protect = (req, res, next) => {
          // If there's no token at all, the user is not authorized
         return res.status(401).json({ message: 'Not authorized, no token' });
     }
+};
+
+export const requireRole = (role) => (req, res, next) => {
+    if (!req.user || req.user.role !== role) {
+        return res.status(403).json({ message: 'Forbidden: insufficient role' });
+    }
+    next();
 };

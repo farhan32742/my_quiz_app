@@ -16,6 +16,7 @@ import authRoutes from './routes/authRoutes.js';
 import examRoutes from './routes/examRoutes.js';
 import dashboardRoutes from './routes/dashboardRoutes.js';
 import studentDashboardRoutes from './routes/studentDashboardRoutes.js'; // Import student routes
+import adminRoutes from './routes/adminRoutes.js';
 
 dotenv.config();
 const app = express();
@@ -45,6 +46,7 @@ app.use('/api', authRoutes);
 app.use('/api/exams', examRoutes);
 app.use('/api/dashboard', dashboardRoutes);
 app.use('/api/student-dashboard', studentDashboardRoutes);
+app.use('/api/admin', adminRoutes);
 
 // --- START SERVER AND CRON JOB ---
 app.listen(PORT, () => {
